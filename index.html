@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .chat-container {
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+        .chat-input {
+            width: 300px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .chat-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .chat-button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333;
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #007bff;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin-top: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container" id="chat-container">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Type your message here...">
+        <button class="chat-button" id="chat-button">Send</button>
+    </div>
+    <div class="output" id="output"></div>
+    <div class="loader" id="loader"></div>
+    <script>
+        document.getElementById('chat-button').addEventListener('click', function() {
+            const chatInput = document.getElementById('chat-input');
+            const output = document.getElementById('output');
+            const loader = document.getElementById('loader');
+            const message = chatInput.value;
+
+            loader.style.display = 'block';
+            output.innerHTML = '';
+
+            fetch('https://a0b3-2600-100d-a0ee-c953-3c58-88f7-ff71-a401.ngrok-free.app/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                loader.style.display = 'none';
+                const words = data.processed_message.split(' ');
+                let index = 0;
+
+                function displayWord() {
+                    if (index < words.length) {
+                        output.innerHTML += words[index] + ' ';
+                        index++;
+                        setTimeout(displayWord, 30);
+                    }
+                }
+
+                displayWord();
+            })
+            .catch(error => {
+                loader.style.display = 'none';
+                output.innerHTML = 'Error: ' + error;
+            });
+        });
+    </script>
+</body>
+</html>
