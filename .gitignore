@@ -169,3 +169,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+dependencies
+.DS_Store
+python
+python.zip
+template.yaml
+.aws-sam

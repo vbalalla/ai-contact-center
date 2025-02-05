@@ -83,10 +83,11 @@
             loader.style.display = 'block';
             output.innerHTML = '';
 
-            fetch('https://a0b3-2600-100d-a0ee-c953-3c58-88f7-ff71-a401.ngrok-free.app/process', {
+            fetch('https://w557ykfjocohgmcfj63whsjrdu0dehxt.lambda-url.us-east-1.on.aws/process', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
+
                 },
                 body: JSON.stringify({ message: message })
             })

@@ -1,2 +1,6 @@
-Flask==2.0.1
-openai==0.27.0
+fastapi
+uvicorn
+aws-lambda-wsgi
+fastapi-cors
+langchain-mistralai
+mangum
